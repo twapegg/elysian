@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 import "./App.css";
@@ -65,6 +66,12 @@ function App() {
                 <SecondNavBar />
                 <Login />
               </Fragment>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+                <Dashboard />
             }
           />
           <Route path="/logout" element={<Logout />} />

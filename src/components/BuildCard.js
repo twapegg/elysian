@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export default function BuildCard({ params }) {
-  const { id, name, price, img, cpu, gpu, motherboard } = params;
+  const { _id, name, price, img, cpu, gpu, motherboard } = params;
 
   return (
     <Card

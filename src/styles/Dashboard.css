@@ -1,0 +1,22 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  height: 100%;
+  width: 250px;
+  background-color: #f8f9fa;
+  transition: all 0.3s;
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.content {
+  margin-left: 0;
+  transition: all 0.3s;
+}
+
+.content.active {
+  margin-left: 250px;
+}

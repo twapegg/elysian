@@ -48,40 +48,37 @@ export default function Register() {
   function registerUser(e) {
     e.preventDefault();
 
-    fetch(`${process.env.REACT_APP_API_URL}/users/register`, {
+    // Check if user already exists
+    fetch(`${process.env.REACT_APP_API_URL}/users/checkEmail`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
+      body: JSON.stringify({ email }),
     })
-      .then((response) => {
-        console.log(response);
-        // if (response.ok) {
-        //   Swal.fire({
-        //     title: "Success!",
-        //     text: "You have successfully registered!",
-        //     icon: "success",
-        //     confirmButtonText: "Continue",
-        //   }).then((result) => {
-        //     if (result.isConfirmed) {
-        //       navigate("/login");
-        //     }
-        //   });
-        // } else {
-        //   Swal.fire({
-        //     title: "Error!",
-        //     text: "Something went wrong!",
-        //     icon: "error",
-        //     confirmButtonText: "Try again",
-        //   });
-        // }
-      })
-      .catch((error) => {
-        console.log(error);
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          console.log("User exists");
+        } else {
+          // Register the user
+          fetch(`${process.env.REACT_APP_API_URL}/users/register`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email,
+              password,
+            }),
+          });
+          Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "You have successfully registered!",
+          });
+          navigate("/login");
+        }
       });
   }
 
