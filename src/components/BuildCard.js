@@ -6,11 +6,7 @@ export default function BuildCard({ params }) {
   const { _id, name, price, img, cpu, gpu, motherboard } = params;
 
   return (
-    <Card
-      as={Link}
-      to="/login"
-      style={{ width: "22rem", textDecoration: "none" }}
-    >
+    <Card as={Link} style={{ width: "22rem", textDecoration: "none" }}>
       <Card.Img
         variant="top"
         src={img}
