@@ -49,6 +49,7 @@ export default function Home() {
           </Card.Text>
         </Col>
       </Row>
+
       <Row className="mt-4">
         {buildCards.map((buildCard) => (
           <Col key={buildCard.id}>
