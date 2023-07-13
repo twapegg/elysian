@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import "../styles/Women.css";
+import "../../styles/Women.css";
 
 export default function Women() {
   return (
@@ -9,7 +9,9 @@ export default function Women() {
         <p className="hero-text display-1">Women</p>
       </div>
       <Container>
-        <Col></Col>
+        <Row>
+          <Col></Col>
+        </Row>
       </Container>
     </>
   );
