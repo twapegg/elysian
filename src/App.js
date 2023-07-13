@@ -5,7 +5,8 @@ import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import Women from "./pages/Women";
+import Women from "./pages/Women/Women";
+import Handbags from "./pages/Women/Handbags";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 
@@ -47,6 +48,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/women" element={<Women />} />
+          <Route path="/women/handbags" element={<Handbags />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
