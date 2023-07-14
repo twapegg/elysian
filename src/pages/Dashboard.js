@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import "../styles/Dashboard.css";
 import { Button, Container, Row, Table, Modal, Form } from "react-bootstrap";
+import "../styles/Dashboard.css";
 
 export default function Dashboard() {
   const [activeProducts, setActiveProducts] = useState([]);
@@ -9,18 +9,31 @@ export default function Dashboard() {
 
   // New Product Form Input
   const [product, setProduct] = useState({
+    brand: "",
     name: "",
-    type: "",
+    category: "",
+    color: "",
     price: "",
+    image: "",
+    description: "",
+    available: true,
   });
 
   // Edit Product Form Input
   const [editedProduct, setEditedProduct] = useState({
     id: "",
+    brand: "",
     name: "",
-    type: "",
+    category: "",
+    color: "",
     price: "",
+    image: "",
+    description: "",
   });
+
+  useEffect(() => {
+    console.log(editedProduct);
+  }, [editedProduct]);
 
   const handleAddModal = () => {
     setShowAddModal(!showAddModal);
@@ -31,7 +44,7 @@ export default function Dashboard() {
   };
 
   const handleAddProduct = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/parts/`, {
+    fetch(`${process.env.REACT_APP_API_URL}/products/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +56,7 @@ export default function Dashboard() {
   };
 
   const handleArchiveProduct = (partId) => {
-    fetch(`${process.env.REACT_APP_API_URL}/parts/${partId}/archive`, {
+    fetch(`${process.env.REACT_APP_API_URL}/products/archive/${partId}/`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -53,7 +66,7 @@ export default function Dashboard() {
   };
 
   const handleActivateProduct = (partId) => {
-    fetch(`${process.env.REACT_APP_API_URL}/parts/${partId}/activate`, {
+    fetch(`${process.env.REACT_APP_API_URL}/products/activate/${partId}/`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -63,15 +76,16 @@ export default function Dashboard() {
   };
 
   const handleUpdateProduct = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/parts/${editedProduct.id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/products/${editedProduct.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
+        brand: editedProduct.brand,
         name: editedProduct.name,
-        type: editedProduct.type,
+        category: editedProduct.category,
         price: editedProduct.price,
       }),
     }).then((response) => response.json());
@@ -79,7 +93,7 @@ export default function Dashboard() {
   };
 
   const handleDeleteProduct = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/parts/${editedProduct.id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/products/${editedProduct.id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -89,26 +103,28 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/parts/`, {
+    fetch(`${process.env.REACT_APP_API_URL}/products/all`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((response) => response.json())
       .then((data) => {
+        const extractedProducts = data.products;
         setActiveProducts(
-          data.map((params) => {
+          extractedProducts.map((params) => {
             return (
               <tr key={params._id}>
-                <td>{params._id}</td>
-                <td>{params.name}</td>
-                <td>{params.type}</td>
-                <td>{params.price}</td>
                 <td>
-                  {params.isAvailable === true ? "In stock" : "Out of stock"}
+                  {params.brand} {params.name}
+                </td>
+                <td>{params.category}</td>
+                <td>${params.price}</td>
+                <td>
+                  {params.available === true ? "In stock" : "Out of stock"}
                 </td>
                 <td>
-                  {params.isAvailable === true ? (
+                  {params.available === true ? (
                     <Button
                       variant="danger"
                       onClick={() => handleArchiveProduct(params._id)}
@@ -129,9 +145,13 @@ export default function Dashboard() {
                     onClick={() => {
                       setEditedProduct({
                         id: params._id,
+                        brand: params.brand,
                         name: params.name,
-                        type: params.type,
+                        category: params.category,
+                        color: params.color,
                         price: params.price,
+                        image: params.image,
+                        description: params.description,
                       });
                       handleModal();
                     }}
@@ -144,7 +164,7 @@ export default function Dashboard() {
           })
         );
       });
-  },);
+  });
 
   return (
     <Container>
@@ -157,7 +177,6 @@ export default function Dashboard() {
         <Table striped bordered hover variant="dark" className="mt-5">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Name</th>
               <th>Part Type</th>
               <th>Price</th>
@@ -176,6 +195,14 @@ export default function Dashboard() {
         <Modal.Body>
           <Form.Control
             type="text"
+            placeholder="Product Brand"
+            name="brand"
+            autoComplete="off"
+            value={product.brand}
+            onChange={(e) => setProduct({ ...product, brand: e.target.value })}
+          />
+          <Form.Control
+            type="text"
             placeholder="Product Name"
             name="name"
             autoComplete="off"
@@ -184,11 +211,21 @@ export default function Dashboard() {
           />
           <Form.Control
             type="text"
-            placeholder="Product Type"
-            name="type"
+            placeholder="Product Category"
+            name="category"
             autoComplete="off"
-            value={product.type}
-            onChange={(e) => setProduct({ ...product, type: e.target.value })}
+            value={product.category}
+            onChange={(e) =>
+              setProduct({ ...product, category: e.target.value })
+            }
+          />
+          <Form.Control
+            type="text"
+            placeholder="Product Color"
+            name="color"
+            autoComplete="off"
+            value={product.color}
+            onChange={(e) => setProduct({ ...product, color: e.target.value })}
           />
           <Form.Control
             type="number"
@@ -198,6 +235,24 @@ export default function Dashboard() {
             value={product.price}
             onChange={(e) => setProduct({ ...product, price: e.target.value })}
             className="no-spinners"
+          />
+          <Form.Control
+            type="text"
+            placeholder="Product Image"
+            name="image"
+            autoComplete="off"
+            value={product.image}
+            onChange={(e) => setProduct({ ...product, image: e.target.value })}
+          />
+          <Form.Control
+            type="text"
+            placeholder="Product Description"
+            name="description"
+            autoComplete="off"
+            value={product.description}
+            onChange={(e) =>
+              setProduct({ ...product, description: e.target.value })
+            }
           />
         </Modal.Body>
         <Modal.Footer>
@@ -217,6 +272,16 @@ export default function Dashboard() {
         <Modal.Body>
           <Form.Control
             type="text"
+            placeholder="Product Brand"
+            name="brand"
+            autoComplete="off"
+            value={editedProduct.brand}
+            onChange={(e) =>
+              setEditedProduct({ ...editedProduct, brand: e.target.value })
+            }
+          />
+          <Form.Control
+            type="text"
             placeholder="Product Name"
             name="name"
             autoComplete="off"
@@ -227,12 +292,22 @@ export default function Dashboard() {
           />
           <Form.Control
             type="text"
-            placeholder="Product Type"
-            name="type"
+            placeholder="Product Category"
+            name="category"
             autoComplete="off"
-            value={editedProduct.type}
+            value={editedProduct.category}
             onChange={(e) =>
-              setEditedProduct({ ...editedProduct, type: e.target.value })
+              setEditedProduct({ ...editedProduct, category: e.target.value })
+            }
+          />
+          <Form.Control
+            type="text"
+            placeholder="Product Color"
+            name="color"
+            autoComplete="off"
+            value={editedProduct.color}
+            onChange={(e) =>
+              setEditedProduct({ ...editedProduct, color: e.target.value })
             }
           />
           <Form.Control
@@ -245,6 +320,29 @@ export default function Dashboard() {
               setEditedProduct({ ...editedProduct, price: e.target.value })
             }
             className="no-spinners"
+          />
+          <Form.Control
+            type="text"
+            placeholder="Product Image"
+            name="image"
+            autoComplete="off"
+            value={editedProduct.image}
+            onChange={(e) =>
+              setEditedProduct({ ...editedProduct, image: e.target.value })
+            }
+          />
+          <Form.Control
+            type="text"
+            placeholder="Product Description"
+            name="description"
+            autoComplete="off"
+            value={editedProduct.description}
+            onChange={(e) =>
+              setEditedProduct({
+                ...editedProduct,
+                description: e.target.value,
+              })
+            }
           />
         </Modal.Body>
         <Modal.Footer>

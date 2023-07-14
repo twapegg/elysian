@@ -26,7 +26,7 @@ export default function AppNavBar() {
             as={Link}
             to="/"
             className="header-text space"
-            style={{ fontSize: "2rem", letterSpacing: "0.3rem" }}
+            style={{ fontSize: "2rem", letterSpacing: "0.2rem" }}
           >
             Elysian
           </Navbar.Brand>

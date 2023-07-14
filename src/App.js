@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import AppNavBar from "./components/AppNavBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Women from "./pages/Women/Women";
 import Handbags from "./pages/Women/Handbags";
+import ProductView from "./components/ProductView";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 
@@ -49,6 +50,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/women" element={<Women />} />
           <Route path="/women/handbags" element={<Handbags />} />
+          <Route path="/women/handbags/:id" element={<ProductView />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
