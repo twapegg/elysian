@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import { Nav, Container, Navbar, Dropdown, Col, Row } from "react-bootstrap";
+import { Nav, Container, Navbar, Dropdown, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GoPerson } from "react-icons/go";
-import { HiOutlineShoppingBag, HiOutlineSearch } from "react-icons/hi";
+import { HiOutlineShoppingBag } from "react-icons/hi";
 import UserContext from "../context/UserContext";
 import BagDropdownProduct from "./BagDropdownProduct";
 import "../styles/AppNavBar.css";
@@ -11,8 +11,15 @@ import "../styles/AppNavBar.css";
 export default function AppNavBar() {
   const { user, cart } = useContext(UserContext);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [products, setProducts] = useState([]);
 
-  const products = cart.products;
+  useEffect(() => {
+    if (cart.products.length > 0) {
+      setProducts(cart.products);
+    } else {
+      setProducts([]);
+    }
+  }, [cart]);
 
   const handleDropdownToggle = (dropdownName) => {
     setActiveDropdown((prevDropdown) =>
@@ -51,7 +58,6 @@ export default function AppNavBar() {
                         <BagDropdownProduct
                           key={product.product}
                           product={product}
-                          // onclick={() => handleDropdownToggle("cartDropdown")}
                         />
                       ))}
                     </Row>

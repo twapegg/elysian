@@ -8,6 +8,7 @@ export default function BagDropdownProduct({ product }) {
   const [productData, setProductData] = useState({});
 
   useEffect(() => {
+    if (!product) return;
     fetch(`${process.env.REACT_APP_API_URL}/products/${product.product}`)
       .then((response) => response.json())
       .then((data) => {
@@ -28,10 +29,10 @@ export default function BagDropdownProduct({ product }) {
       className="my-3 text-decoration-none"
     >
       <Col className="bag" md={6}>
-        <img src={productData.image} class="img-fluid" alt="Image" />
+        <img src={productData.image} className="img-fluid" alt="Image" />
       </Col>
       <Col md={6}>
-        <div class="d-flex flex-column text-dark">
+        <div className="d-flex flex-column text-dark">
           <h6 className="fw-bold">
             {productData.brand} {productData.name}
           </h6>
