@@ -1,28 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Card, Col, Row, Button } from "react-bootstrap";
+import { Container, Col, Row, Button } from "react-bootstrap";
 
 export default function ProductView() {
   const { id } = useParams();
-  const [product, setProduct] = useState({
-    brand: "",
-    name: "",
-    category: "",
-    color: "",
-    price: "",
-    image: "",
-    description: "",
-    available: true,
-  });
+  const [product, setProduct] = useState({});
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/products/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        data.product.price = data.product.price.toLocaleString("en-US", {
-          style: "currency",
-          currency: "USD",
-        });
+        data.product.price = data.product.price.toLocaleString();
         setProduct(data.product);
       });
   }, [id]);
@@ -42,33 +30,56 @@ export default function ProductView() {
   };
 
   return (
-    <>
-      <div
-        className="hero bg-image"
-        style={{
-          backgroundImage:
-            "url('//media.gucci.com/content/HeroRegularStandard_3200x1350/1684749646/HeroRegularStandard_Gucci-Prefall-May2023-017_001_Default.jpg')",
-        }}
-      >
+    <Row>
+      <Col md={12} className="position-relative">
         <Container
-          className="d-flex align-items-center justify-content-center"
-          style={{ height: "100%" }}
+          className="text-center position-absolute"
+          style={{
+            left: "35.5%",
+            top: "40%",
+            zIndex: "1",
+            backgroundColor: "white",
+            width: "27.5%",
+          }}
         >
           <Row>
             <Col>
-              <Card style={{ width: "22rem" }}>
-                <Card.Title className="text-center">
+              <div style={{ width: "22rem" }}>
+                <h6 className="big">
                   {product.brand} {product.name}
-                </Card.Title>
-
-                <h6 className="text-center price">{product.price}</h6>
-
-                <Button>Add to Shopping Bag</Button>
-              </Card>
+                </h6>
+                <h6 className="price">${product.price}</h6>
+                <Button variant="dark" className="w-auto3">
+                  Add to Shopping Bag
+                </Button>
+              </div>
             </Col>
           </Row>
         </Container>
-      </div>
-    </>
+        <Col
+          md={12}
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div className="col-6">
+            <div
+              className="hero bg-image"
+              style={{
+                backgroundImage:
+                  "url('https://media.gucci.com/style/DarkGray_Center_0_0_1200x1200/1568828708/602204_1DB0G_9022_005_100_0000_Light-Gucci-Horsebit-1955-shoulder-bag.jpg')",
+              }}
+            ></div>
+          </div>
+          <div className="col-6">
+            <div
+              className="hero"
+              style={{
+                backgroundImage:
+                  "url('https://media.gucci.com/style/DarkGray_Center_0_0_2400x2400/1581963303/602204_1DB0G_9022_001_074_0000_Light-Gucci-Horsebit-1955-shoulder-bag.jpg')",
+              }}
+            ></div>
+          </div>
+        </Col>
+      </Col>
+    </Row>
   );
 }

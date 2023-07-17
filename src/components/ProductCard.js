@@ -32,10 +32,7 @@ export default function ProductCard({ product }) {
                 {brand} {name}
               </Card.Title>
               <div className="mt-3 text-center price">
-                {price.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })}
+                ${price.toLocaleString()}
               </div>
               <h6
                 as={Link}
