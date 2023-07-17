@@ -1,10 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Col, Row, Button } from "react-bootstrap";
+import { Offcanvas, Col, Row, Dropdown, Button } from "react-bootstrap";
+import UserContext from "../context/UserContext";
 
 export default function ProductView() {
+  const { setCart } = useContext(UserContext);
   const { id } = useParams();
   const [product, setProduct] = useState({});
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/products/${id}`)
@@ -15,71 +21,78 @@ export default function ProductView() {
       });
   }, [id]);
 
-  const addToShoppingBag = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/cart/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(product),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-  };
+  // // const addToShoppingBag = () => {
+  // //   fetch(`${process.env.REACT_APP_API_URL}/cart/me/cart`, {`)
+  // };
 
   return (
-    <Row>
-      <Col md={12} className="position-relative">
-        <Container
-          className="text-center position-absolute"
-          style={{
-            left: "35.5%",
-            top: "40%",
-            zIndex: "1",
-            backgroundColor: "white",
-            width: "27.5%",
-          }}
-        >
-          <Row>
-            <Col>
-              <div style={{ width: "22rem" }}>
-                <h6 className="big">
-                  {product.brand} {product.name}
-                </h6>
-                <h6 className="price">${product.price}</h6>
-                <Button variant="dark" className="w-auto3">
-                  Add to Shopping Bag
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-        <Col
-          md={12}
-          className="d-flex align-items-center justify-content-center"
-        >
-          <div className="col-6">
-            <div
-              className="hero bg-image"
-              style={{
-                backgroundImage:
-                  "url('https://media.gucci.com/style/DarkGray_Center_0_0_1200x1200/1568828708/602204_1DB0G_9022_005_100_0000_Light-Gucci-Horsebit-1955-shoulder-bag.jpg')",
-              }}
-            ></div>
-          </div>
-          <div className="col-6">
-            <div
-              className="hero"
-              style={{
-                backgroundImage:
-                  "url('https://media.gucci.com/style/DarkGray_Center_0_0_2400x2400/1581963303/602204_1DB0G_9022_001_074_0000_Light-Gucci-Horsebit-1955-shoulder-bag.jpg')",
-              }}
-            ></div>
-          </div>
+    <div className="position-relative">
+      <Col md={12} className="product-bg">
+        <Col sm={12} md={6} className="d-inline-block">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="img-fluid w-100"
+          />
         </Col>
+        <div className="w-50 d-none d-md-inline-block ">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="img-fluid w-100 "
+          />
+        </div>
       </Col>
-    </Row>
+
+      <Row className="d-md-block d-none">
+        <Col sm={12} md={3} className="product" style={{ zIndex: 1 }}>
+          <h5 className="text-center fs-5 fw-bold">
+            {product.brand} {product.name}
+          </h5>
+
+          <span className="mt-2 fs-5 fw-bold">${product.price}</span>
+          <Dropdown
+            variant="primary"
+            onClick={handleShow}
+            className="mt-3 fs-6"
+          >
+            <Dropdown.Toggle variant="transparent" id="dropdown-basic">
+              {product.color} leather
+            </Dropdown.Toggle>
+          </Dropdown>
+
+          <span className="mt-3">
+            {product.available ? "AVAILABLE" : "NOT AVAILABLE"}
+          </span>
+
+          <p className="mt-3 text-center ">
+            {product.available
+              ? "Your selection is available for immediate purchase."
+              : "We're sorry, this product is currently not available for purchase."}
+          </p>
+
+          <Button
+            variant="dark"
+            className="mt-1 fs-6 w-100 product-button fw-bold"
+            // onClick={addToShoppingBag}
+          >
+            ADD TO SHOPPING BAG
+          </Button>
+          <Button
+            variant="transparent"
+            className="mt-1 fs-6 w-100 product-button border-dark fw-bold"
+          >
+            CHECKOUT
+          </Button>
+
+          <Offcanvas show={show} placement="bottom" onHide={handleClose}>
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>Variant</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body></Offcanvas.Body>
+          </Offcanvas>
+        </Col>
+      </Row>
+    </div>
   );
 }

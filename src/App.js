@@ -17,6 +17,8 @@ function App() {
     isAdmin: null,
   });
 
+  const [cart, setCart] = useState({});
+
   function unsetUser() {
     localStorage.clear();
   }
@@ -38,8 +40,25 @@ function App() {
     );
   }, []);
 
+  useEffect(() => {
+    if (user.id !== undefined || user.id !== null) {
+      fetch(`${process.env.REACT_APP_API_URL}/users/me/cart`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }).then((response) => {
+        if (response.ok) {
+          response.json().then((data) => {
+            const extractedProducts = data.cart.products.map((item) => item);
+            setCart({ products: extractedProducts });
+          });
+        }
+      });
+    }
+  }, [user.id]);
+
   return (
-    <UserProvider value={{ user, setUser, unsetUser }}>
+    <UserProvider value={{ user, setUser, unsetUser, cart, setCart }}>
       <BrowserRouter>
         <AppNavBar />
         <Routes>

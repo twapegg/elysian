@@ -9,23 +9,10 @@ import BagDropdownProduct from "./BagDropdownProduct";
 import "../styles/AppNavBar.css";
 
 export default function AppNavBar() {
-  const { user } = useContext(UserContext);
-  const [products, setProducts] = useState([]);
+  const { user, cart } = useContext(UserContext);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/users/me/cart`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }).then((response) => {
-      if (response.ok) {
-        response.json().then((data) => {
-          const extractedProducts = data.cart.products.map((item) => item);
-          setProducts(extractedProducts);
-        });
-      }
-    });
-  }, [user.id]);
+
+  const products = cart.products;
 
   const handleDropdownToggle = (dropdownName) => {
     setActiveDropdown((prevDropdown) =>
@@ -46,10 +33,6 @@ export default function AppNavBar() {
             Elysian
           </Navbar.Brand>
           <Nav className="ms-auto">
-            <Nav.Link className="search-icon">
-              <HiOutlineSearch />
-            </Nav.Link>
-
             <Nav.Link
               onClick={() => handleDropdownToggle("cartDropdown")}
               className="cart-icon"
@@ -74,7 +57,9 @@ export default function AppNavBar() {
                     </Row>
                   ) : (
                     <>
-                      <p>Empty</p>
+                      <h6 className="text-center">
+                        Your Shopping Bag is Empty
+                      </h6>
                     </>
                   )}
                 </Dropdown.Menu>

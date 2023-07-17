@@ -31,7 +31,7 @@ export default function ProductCard({ product }) {
               <Card.Title className="text-center">
                 {brand} {name}
               </Card.Title>
-              <div className="mt-3 text-center price">
+              <div className="mt-3 text-center price fw-bold">
                 ${price.toLocaleString()}
               </div>
               <h6

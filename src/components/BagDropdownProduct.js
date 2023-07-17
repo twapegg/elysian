@@ -32,7 +32,7 @@ export default function BagDropdownProduct({ product }) {
       </Col>
       <Col md={6}>
         <div class="d-flex flex-column text-dark">
-          <h6>
+          <h6 className="fw-bold">
             {productData.brand} {productData.name}
           </h6>
 
