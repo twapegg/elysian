@@ -17,7 +17,11 @@ function App() {
     isAdmin: null,
   });
 
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState({
+    user: null,
+    products: [],
+    subTotal: 0,
+  });
 
   function unsetUser() {
     localStorage.clear();
@@ -40,6 +44,7 @@ function App() {
     );
   }, []);
 
+  // Gets the cart of the user if the user is logged in
   useEffect(() => {
     if (user.id !== undefined || user.id !== null) {
       fetch(`${process.env.REACT_APP_API_URL}/users/me/cart`, {
@@ -49,8 +54,7 @@ function App() {
       }).then((response) => {
         if (response.ok) {
           response.json().then((data) => {
-            const extractedProducts = data.cart.products.map((item) => item);
-            setCart({ products: extractedProducts });
+            setCart(data.cart);
           });
         }
       });

@@ -4,7 +4,7 @@ import { Offcanvas, Col, Row, Dropdown, Button } from "react-bootstrap";
 import UserContext from "../context/UserContext";
 
 export default function ProductView() {
-  const { setCart } = useContext(UserContext);
+  const { user, cart, setCart } = useContext(UserContext);
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [show, setShow] = useState(false);
@@ -21,9 +21,47 @@ export default function ProductView() {
       });
   }, [id]);
 
-  // // const addToShoppingBag = () => {
-  // //   fetch(`${process.env.REACT_APP_API_URL}/cart/me/cart`, {`)
-  // };
+  // Creates a cart for the user if the user doesn't have one
+  const createCart = () => {
+    console.log(user.id);
+    fetch(`${process.env.REACT_APP_API_URL}/carts/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ user: `${user.id} ` }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Sets the cart of the user
+        setCart(data.cart);
+      });
+  };
+
+  const addToCart = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/carts/add/${cart._id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ product: `${product._id}`, quantity: 1 }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCart({ ...cart, products: data.cart.products });
+      });
+  };
+
+  const handleAddToShoppingBag = () => {
+    if (!cart._id) {
+      createCart();
+      addToCart();
+    } else {
+      addToCart();
+    }
+  };
 
   return (
     <div className="position-relative">
@@ -74,7 +112,7 @@ export default function ProductView() {
           <Button
             variant="dark"
             className="mt-1 fs-6 w-100 product-button fw-bold"
-            // onClick={addToShoppingBag}
+            onClick={handleAddToShoppingBag}
           >
             ADD TO SHOPPING BAG
           </Button>
