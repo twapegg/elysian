@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Container, Row, Table, Modal, Form } from "react-bootstrap";
-import "../styles/Dashboard.css";
+import "../../styles/Dashboard.css";
 
 export default function Dashboard() {
   const [activeProducts, setActiveProducts] = useState([]);

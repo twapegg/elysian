@@ -4,10 +4,12 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+import UserDashboard from "./pages/Admin/UserDashboard";
+import Dashboard from "./pages/Admin/Dashboard";
 import Women from "./pages/Women/Women";
 import Handbags from "./pages/Women/Handbags";
 import ProductView from "./components/ProductView";
+import NotFound from "./pages/NotFound";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 
@@ -89,9 +91,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/users" element={<UserDashboard />} />
           <Route path="/women" element={<Women />} />
           <Route path="/women/handbags" element={<Handbags />} />
           <Route path="/women/handbags/:id" element={<ProductView />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
