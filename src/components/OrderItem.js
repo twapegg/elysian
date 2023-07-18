@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { BsToggleOn, BsToggleOff, BsThreeDotsVertical } from "react-icons/bs";
-import { Dropdown } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
 
 export default function DashboardItem({ order }) {
   const [orderData, setOrderData] = useState({
@@ -17,19 +16,10 @@ export default function DashboardItem({ order }) {
     }),
   });
 
-  console.log(orderData.products);
-
   return (
     <>
       <tr>
         <td>{orderData._id}</td>
-        <td>
-          <ul>
-            {orderData.products.map((product) => (
-              <li key={product._id}>{product.name}</li>
-            ))}
-          </ul>
-        </td>
         <td>${orderData.totalPrice.toLocaleString()}</td>
         <td>{orderData.date}</td>
       </tr>

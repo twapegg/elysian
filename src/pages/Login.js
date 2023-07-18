@@ -46,12 +46,10 @@ export default function Register() {
         if (data) {
           localStorage.setItem("token", data.access);
           retrieveUserDetails(data.access);
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "You have successfully logged in!",
-          });
-          navigate("/");
+
+          if (user.isAdmin) {
+            navigate("/dashboard");
+          }
         }
       });
   }

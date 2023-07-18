@@ -28,7 +28,7 @@ export default function BagDropdownProduct({ product }) {
       to={`/women/handbags/${product.product}`}
       className="my-3 text-decoration-none"
     >
-      <Col className="bag" md={6}>
+      <Col className="bag" md={5}>
         <img src={productData.image} className="img-fluid" alt="Image" />
       </Col>
       <Col md={6}>
@@ -37,7 +37,7 @@ export default function BagDropdownProduct({ product }) {
             {productData.brand} {productData.name}
           </h6>
 
-          <p className="price py-3">${productData.price}</p>
+          <p className="price py-2">${productData.price}</p>
           <span className="small">Variant: {productData.color} leather</span>
           <span className="small">Quantity: {quantity}</span>
         </div>

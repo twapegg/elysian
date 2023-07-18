@@ -33,7 +33,6 @@ export default function OrderHistory() {
                   Order ID
                 </th>
                 <th style={{ backgroundColor: "#e8e8e8" }}>Products</th>
-                <th style={{ backgroundColor: "#e8e8e8" }}>Total Price</th>
                 <th
                   style={{
                     backgroundColor: "#e8e8e8",
