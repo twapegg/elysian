@@ -18,7 +18,7 @@ export default function ProductCard({ product }) {
     <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {isHovered ? (
         <Link
-          to={`/women/handbags/${product._id}`}
+          to={`/handbags/${product._id}`}
           style={{ textDecoration: "none" }}
         >
           <Card>

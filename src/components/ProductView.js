@@ -1,6 +1,13 @@
 import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
-import { Offcanvas, Col, Row, Dropdown, Button } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
+import {
+  Offcanvas,
+  Col,
+  Row,
+  Dropdown,
+  Button,
+  Container,
+} from "react-bootstrap";
 import UserContext from "../context/UserContext";
 
 export default function ProductView() {
@@ -8,6 +15,7 @@ export default function ProductView() {
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [show, setShow] = useState(false);
+  const [similarProducts, setSimilarProducts] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -36,6 +44,25 @@ export default function ProductView() {
       });
   };
 
+  useEffect(() => {
+    fetch(
+      `${process.env.REACT_APP_API_URL}/products/category/${product.name}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((response) => {
+      if (response.ok) {
+        response.json().then((data) => {
+          setSimilarProducts(data.products);
+        });
+      }
+    });
+  }, [product.name]);
+
+  console.log(similarProducts);
   return (
     <div className="position-relative">
       <Col md={12} className="product-bg">
@@ -98,9 +125,25 @@ export default function ProductView() {
 
           <Offcanvas show={show} placement="bottom" onHide={handleClose}>
             <Offcanvas.Header closeButton>
-              <Offcanvas.Title>Variant</Offcanvas.Title>
+              <Offcanvas.Title>Variants</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Body></Offcanvas.Body>
+            <Offcanvas.Body>
+              <div className="d-flex">
+                {similarProducts.map((product) => (
+                  <Container>
+                    <Row>
+                      <Col as={Link} to={`/handbags/${product._id}`} md={6}>
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="img-fluid w-75"
+                        />
+                      </Col>
+                    </Row>
+                  </Container>
+                ))}
+              </div>
+            </Offcanvas.Body>
           </Offcanvas>
         </Col>
       </Row>
