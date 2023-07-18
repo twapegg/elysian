@@ -45,6 +45,7 @@ function App() {
   }, []);
 
   // Gets the cart of the user if the user is logged in
+  // If user doesn't have a cart, create one
   useEffect(() => {
     if (user.id !== undefined || user.id !== null) {
       fetch(`${process.env.REACT_APP_API_URL}/users/me/cart`, {
@@ -55,6 +56,23 @@ function App() {
         if (response.ok) {
           response.json().then((data) => {
             setCart(data.cart);
+          });
+        } else {
+          fetch(`${process.env.REACT_APP_API_URL}/carts/`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user: user.id,
+            }),
+          }).then((response) => {
+            if (response.ok) {
+              response.json().then((data) => {
+                setCart(data.cart);
+              });
+            }
           });
         }
       });

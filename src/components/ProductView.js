@@ -21,24 +21,6 @@ export default function ProductView() {
       });
   }, [id]);
 
-  // Creates a cart for the user if the user doesn't have one
-  const createCart = () => {
-    console.log(user.id);
-    fetch(`${process.env.REACT_APP_API_URL}/carts/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({ user: `${user.id} ` }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Sets the cart of the user
-        setCart(data.cart);
-      });
-  };
-
   const addToCart = () => {
     fetch(`${process.env.REACT_APP_API_URL}/carts/add/${cart._id}`, {
       method: "PATCH",
@@ -52,15 +34,6 @@ export default function ProductView() {
       .then((data) => {
         setCart({ ...cart, products: data.cart.products });
       });
-  };
-
-  const handleAddToShoppingBag = () => {
-    if (!cart._id) {
-      createCart();
-      addToCart();
-    } else {
-      addToCart();
-    }
   };
 
   return (
@@ -112,7 +85,7 @@ export default function ProductView() {
           <Button
             variant="dark"
             className="mt-1 fs-6 w-100 product-button fw-bold"
-            onClick={handleAddToShoppingBag}
+            onClick={addToCart}
           >
             ADD TO SHOPPING BAG
           </Button>
