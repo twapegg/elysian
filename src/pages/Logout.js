@@ -11,7 +11,11 @@ export default function Logout() {
       id: null,
       isAdmin: null,
     });
-    setCart({});
+    setCart({
+      user: null,
+      products: [],
+      subTotal: 0,
+    });
   });
 
   return <Navigate to="/login" />;
