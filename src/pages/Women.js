@@ -1,5 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
-import "../../styles/Women.css";
+import "../styles/Women.css";
 
 export default function Women() {
   return (

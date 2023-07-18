@@ -5,8 +5,8 @@ import Logout from "./pages/Logout";
 import Register from "./pages/Register";
 import UserDashboard from "./pages/Admin/UserDashboard";
 import Dashboard from "./pages/Admin/Dashboard";
-import Women from "./pages/Women/Women";
-import Handbags from "./pages/Women/Handbags";
+import Women from "./pages/Women";
+import Handbags from "./pages/Handbags";
 import ProductView from "./components/ProductView";
 import ShoppingBag from "./pages/ShoppingBag";
 import OrderHistory from "./pages/OrderHistory";
@@ -96,8 +96,8 @@ function App() {
           <Route path="/dashboard/users" element={<UserDashboard />} />
           <Route path="/cart" element={<ShoppingBag />} />
           <Route path="/history" element={<OrderHistory />} />
-          <Route path="/women/handbags" element={<Handbags />} />
-          <Route path="/women/handbags/:id" element={<ProductView />} />
+          <Route path="/handbags" element={<Handbags />} />
+          <Route path="/handbags/:id" element={<ProductView />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
