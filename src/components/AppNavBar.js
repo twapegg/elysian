@@ -82,6 +82,11 @@ export default function AppNavBar() {
             {activeDropdown === "personDropdown" && (
               <Dropdown show align="end" className="person-dropdown">
                 <Dropdown.Menu>
+                  {user.isAdmin ? (
+                    <Dropdown.Item as={Link} to="/dashboard">
+                      Dashboard
+                    </Dropdown.Item>
+                  ) : null}
                   {user.id === null || user.id === undefined ? (
                     <>
                       <Dropdown.Item
@@ -100,9 +105,14 @@ export default function AppNavBar() {
                       </Dropdown.Item>
                     </>
                   ) : (
-                    <Dropdown.Item as={Link} to="/logout">
-                      Logout
-                    </Dropdown.Item>
+                    <>
+                      <Dropdown.Item as={Link} to="/logout">
+                        Logout
+                      </Dropdown.Item>
+                      <Dropdown.Item as={Link} to="/history">
+                        Order History
+                      </Dropdown.Item>
+                    </>
                   )}
                 </Dropdown.Menu>
               </Dropdown>
