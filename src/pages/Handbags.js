@@ -6,7 +6,7 @@ export default function Handbags() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/products/all`)
+    fetch(`${process.env.REACT_APP_API_URL}/products/`)
       .then((response) => response.json())
       .then((data) => {
         const extractedProducts = data.products;

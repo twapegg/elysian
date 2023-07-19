@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   Offcanvas,
   Col,
@@ -11,11 +11,14 @@ import {
 import UserContext from "../context/UserContext";
 
 export default function ProductView() {
-  const { user, cart, setCart } = useContext(UserContext);
+  const { user, cart, setCart, bagDropdown, setBagDropdown } =
+    useContext(UserContext);
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [show, setShow] = useState(false);
   const [similarProducts, setSimilarProducts] = useState([]);
+
+  const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -40,20 +43,21 @@ export default function ProductView() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setCart({ ...cart, products: data.cart.products });
+        setCart({
+          ...cart,
+          products: data.cart.products,
+          subTotal: data.cart.subTotal,
+        });
       });
   };
 
   useEffect(() => {
-    fetch(
-      `${process.env.REACT_APP_API_URL}/products/category/${product.name}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((response) => {
+    fetch(`${process.env.REACT_APP_API_URL}/products/similar/${product.name}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
       if (response.ok) {
         response.json().then((data) => {
           setSimilarProducts(data.products);
@@ -62,7 +66,6 @@ export default function ProductView() {
     });
   }, [product.name]);
 
-  console.log(similarProducts);
   return (
     <div className="position-relative">
       <Col md={12} className="product-bg">
@@ -112,13 +115,25 @@ export default function ProductView() {
           <Button
             variant="dark"
             className="mt-1 fs-6 w-100 product-button fw-bold"
-            onClick={addToCart}
+            onClick={() => {
+              addToCart();
+              setBagDropdown(true);
+            }}
+            disabled={user.isAdmin ? true : false}
           >
             ADD TO SHOPPING BAG
           </Button>
           <Button
             variant="transparent"
             className="mt-1 fs-6 w-100 product-button border-dark fw-bold"
+            onClick={() => {
+              addToCart();
+              navigate("/cart");
+              if (bagDropdown) {
+                setBagDropdown(false);
+              }
+            }}
+            disabled={user.isAdmin ? true : false}
           >
             CHECKOUT
           </Button>
@@ -130,7 +145,7 @@ export default function ProductView() {
             <Offcanvas.Body>
               <div className="d-flex">
                 {similarProducts.map((product) => (
-                  <Container>
+                  <Container key={product._id}>
                     <Row>
                       <Col as={Link} to={`/handbags/${product._id}`} md={6}>
                         <img

@@ -24,10 +24,8 @@ export default function ShoppingBag() {
     }).then((response) => {
       if (response.ok) {
         response.json().then((data) => {
-          console.log(data);
           setCart({
-            id: null,
-            user: null,
+            ...cart,
             products: [],
             subTotal: 0,
           });
