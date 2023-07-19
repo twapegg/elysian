@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Nav, Container, Navbar, Dropdown, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GoPerson } from "react-icons/go";
 import { HiOutlineShoppingBag } from "react-icons/hi";
@@ -9,9 +9,12 @@ import BagDropdownProduct from "./BagDropdownProduct";
 import "../styles/AppNavBar.css";
 
 export default function AppNavBar() {
-  const { user, cart } = useContext(UserContext);
+  const { user, cart, bagDropdown, handleBagDropdown } =
+    useContext(UserContext);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [products, setProducts] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (cart.products.length > 0) {
@@ -29,7 +32,7 @@ export default function AppNavBar() {
 
   return (
     <>
-      <Navbar bg="white" style={{ height: "4.5rem" }}>
+      <Navbar bg="white" style={{ height: "4.5rem" }} className="fixed-top">
         <Container className="d-flex justify-content-between align-items-center">
           <Navbar.Brand
             as={Link}
@@ -40,30 +43,37 @@ export default function AppNavBar() {
             Elysian
           </Navbar.Brand>
           <Nav className="ms-auto">
-            <Nav.Link
-              onClick={() => handleDropdownToggle("cartDropdown")}
-              className="cart-icon"
-            >
+            <Nav.Link onClick={handleBagDropdown} className="cart-icon">
               <HiOutlineShoppingBag />
             </Nav.Link>
 
-            {activeDropdown === "cartDropdown" && (
+            {bagDropdown && (
               <Dropdown show align="end" className="cart-dropdown">
                 <Dropdown.Menu className="mx-5" style={{ minWidth: "26rem" }}>
                   {products.length > 0 ? (
                     <Row>
                       <h5 className="text-center mt-2">Shopping Bag</h5>
-
                       {products.map((product) => (
                         <BagDropdownProduct
                           key={product.product}
                           product={product}
                         />
                       ))}
+                      <div className="d-flex justify-content-around">
+                        <button
+                          className="btn btn-dark fw-bold"
+                          onClick={async (e) => {
+                            handleBagDropdown(e);
+                            navigate("/cart");
+                          }}
+                        >
+                          VIEW BAG
+                        </button>
+                      </div>
                     </Row>
                   ) : (
                     <>
-                      <h6 className="text-center">
+                      <h6 className="text-center ">
                         Your Shopping Bag is Empty
                       </h6>
                     </>
@@ -128,18 +138,13 @@ export default function AppNavBar() {
             {activeDropdown === "hamburgerDropdown" && (
               <Dropdown show align="end" className="hamburger-dropdown">
                 <Dropdown.Menu>
-                  <Dropdown.Item>What's New</Dropdown.Item>
                   <Dropdown.Item
                     as={Link}
-                    to="/women"
+                    to="/handbags"
                     onClick={() => handleDropdownToggle("hamburgerDropdown")}
                   >
-                    Women
+                    Handbags
                   </Dropdown.Item>
-                  <Dropdown.Item>Men</Dropdown.Item>
-                  <Dropdown.Item>Travel</Dropdown.Item>
-                  <Dropdown.Item>Handbags</Dropdown.Item>
-                  <Dropdown.Item>Sports</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             )}

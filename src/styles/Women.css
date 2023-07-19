@@ -114,3 +114,10 @@
     flex: 1 0 30%; /* Adjust the width as needed */
   }
 }
+
+.carousel-home {
+  width: 100%;
+}
+.carousel-second {
+  width: 100%;
+}
