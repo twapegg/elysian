@@ -48,7 +48,7 @@ export default function ShoppingBag() {
         <p className="hero-text mt-3">SHOPPING BAG</p>
       </div>
       <Container>
-        <Row className="mt-5">
+        <Row className="mt-5 mb-5 pb-5">
           <Col md={8}>
             <h6>YOUR SELECTIONS</h6>
             <hr />

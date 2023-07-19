@@ -119,7 +119,11 @@ export default function ProductView() {
               addToCart();
               setBagDropdown(true);
             }}
-            disabled={user.isAdmin ? true : false}
+            disabled={
+              user.isAdmin || user.id === undefined || user.id === null
+                ? true
+                : false
+            }
           >
             ADD TO SHOPPING BAG
           </Button>
@@ -133,7 +137,11 @@ export default function ProductView() {
                 setBagDropdown(false);
               }
             }}
-            disabled={user.isAdmin ? true : false}
+            disabled={
+              user.isAdmin || user.id === undefined || user.id === null
+                ? true
+                : false
+            }
           >
             CHECKOUT
           </Button>

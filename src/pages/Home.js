@@ -12,19 +12,20 @@ export default function Home() {
             <Carousel indicators controls={false} className="carousel-home">
               <Carousel.Item>
                 <img
-                  src="https://media.gucci.com/dynamic/b3c8/hEOJvON_RqYnWTTp_UDdGyY8wfbtUu0FhvLW2_Z6H8g9JyuBZcn4Uybv_319W8kOVxqP_Z6d5xc2S9wJzsdXOeWChZMVEWnRBPPrC+Tjncnhe9GTsuJ2CQZTVOYNmgz5ifag_4Rms9_+1Qx13CKNUxwjYF+3cdO_sVOr8nBhfquevzqdv1fXR2IGgyT6d7Gr9yVdk_cOO+F5Rb3CErOzUi2YK_rv94PsYdpL13WFih2AAlK8bl4nvAbP6jyOSXn7/Portrait_Horsebit-4-Default.png"
-                  className="d-block w-100"
-                />
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
                   src="https://media.gucci.com/content/DiaryArticleSingle_Standard_768x1075/1688564706/DiaryArticleSingle_Horsebit-Wave2-Jul23-01_001_Default.jpg"
                   className="d-block w-100"
                 />
               </Carousel.Item>
+
               <Carousel.Item>
                 <img
                   src="https://media.gucci.com/content/DiaryArticleSingle_Standard_768x1075/1688546705/DiaryArticleSingle_Horsebit-Wave2-Jul23-06_001_Default.jpg"
+                  className="d-block w-100"
+                />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  src="https://media.gucci.com/dynamic/b3c8/hioNyWjn29XSyONeMzldfSB58wDZP_fMEZs5VNq+eeCPzPmdR7vqFDXbtkWC5dj4yVKykPWUt4WzQi9NX6zg8OogyJsRZBErAx3y_7bYeO_od1s7KouFMeGNjMRWIOis7kALYXrIjXk9dBaGBmc_fo8dtcT_dXuPaPSfybrk8934j+moZ+vCZ5q8vfFaYZQIX0_34K44MohBMu1ZtlMr2sMvbWTr64E5Y5RrVkRaqiP3s4O5CMo4FQh8sUIqRlKi/Portrait_Horsebit-4-Default.png"
                   className="d-block w-100"
                 />
               </Carousel.Item>
