@@ -15,8 +15,27 @@ export default function DashboardItem({ user }) {
     setActiveDropdown(!activeDropdown);
   };
 
-  const handleToggleAdmin = () => {
+  const handleSetAdmin = () => {
     fetch(`${process.env.REACT_APP_API_URL}/users/setAdmin/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        id: userData._id,
+      }),
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((data) => {
+          setUserData(data);
+        });
+      }
+    });
+  };
+
+  const handleUnsetAdmin = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/users/unsetAdmin/`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -55,11 +74,11 @@ export default function DashboardItem({ user }) {
         <td>
           {userData !== null && userData.isAdmin ? (
             <>
-              <BsToggleOn className="fs-3" onClick={handleToggleAdmin} />
+              <BsToggleOn className="fs-3" onClick={handleUnsetAdmin} />
             </>
           ) : (
             <>
-              <BsToggleOff className="fs-3" onClick={handleToggleAdmin} />
+              <BsToggleOff className="fs-3" onClick={handleSetAdmin} />
             </>
           )}
         </td>
