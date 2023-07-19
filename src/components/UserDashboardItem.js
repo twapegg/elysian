@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BsToggleOn, BsToggleOff, BsThreeDotsVertical } from "react-icons/bs";
 import { Dropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function DashboardItem({ user }) {
   const [userData, setUserData] = useState({
@@ -68,7 +69,13 @@ export default function DashboardItem({ user }) {
               <BsThreeDotsVertical className="fs-4" onClick={handleDropdown} />
               <Dropdown show={activeDropdown} align="end">
                 <Dropdown.Menu>
-                  <Dropdown.Item bg="dark">View Order History</Dropdown.Item>
+                  <Dropdown.Item
+                    bg="dark"
+                    as={Link}
+                    to={`/dashboard/users/${userData._id}`}
+                  >
+                    View Order History
+                  </Dropdown.Item>
                   <Dropdown.Item
                     style={{ backgroundColor: "#dc3545", color: "white" }}
                     onClick={handleDeleteUser}

@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
-import { Container, Col, Row, Table } from "react-bootstrap";
-import DashboardItem from "../../components/UserDashboardItem";
+import { useState, useEffect } from "react";
+import { Col, Container, Row, Table } from "react-bootstrap";
+import OrderItem from "../../components/OrderItem";
 
-export default function UserDashboard() {
-  const [users, setUsers] = useState([]);
+export default function OrderDashboard() {
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/users/`, {
+    fetch(`${process.env.REACT_APP_API_URL}/orders`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((response) => response.json())
-      .then((data) => setUsers(data));
+      .then((data) => setOrders(data.orders));
   }, []);
 
   return (
     <Container>
       <Row className="mt-5 py-5">
-        <h1 className="ms-5">User Management</h1>
+        <h1 className="ms-5">All Orders</h1>
         <Col md={12}>
           <Table hover className="mt-3">
             <thead>
@@ -30,23 +30,22 @@ export default function UserDashboard() {
                     borderRadius: "16px 0 0 0",
                   }}
                 >
-                  ID
+                  Order ID
                 </th>
-                <th style={{ backgroundColor: "#e8e8e8" }}>Email</th>
-                <th style={{ backgroundColor: "#e8e8e8" }}>Admin</th>
+                <th style={{ backgroundColor: "#e8e8e8" }}>Total Price</th>
                 <th
                   style={{
                     backgroundColor: "#e8e8e8",
                     borderRadius: "0 16px 0 0",
                   }}
                 >
-                  Actions
+                  Date Purchased
                 </th>
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
-                <DashboardItem key={user._id} user={user} />
+              {orders.map((order) => (
+                <OrderItem key={order._id} order={order} />
               ))}
             </tbody>
           </Table>
