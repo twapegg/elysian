@@ -4,7 +4,7 @@ import { Col, Row } from "react-bootstrap";
 export default function NotFound() {
   return (
     <>
-      <div className="position-relative" style={{ height: "60 vh" }}>
+      <div className="position-relative mt-5 py-5" style={{ height: "60 vh" }}>
         <Col md={12}>
           <img
             src={
